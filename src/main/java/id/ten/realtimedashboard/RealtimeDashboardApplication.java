@@ -10,18 +10,18 @@ import org.springframework.context.annotation.ComponentScan;
 @ComponentScan("id.ten")
 public class RealtimeDashboardApplication implements CommandLineRunner {
 
-	private final KafkaProducerService kafkaProducerService;
+    private final KafkaProducerService kafkaProducerService;
 
-	public RealtimeDashboardApplication(KafkaProducerService kafkaProducerService) {
-		this.kafkaProducerService = kafkaProducerService;
-	}
+    public RealtimeDashboardApplication(KafkaProducerService kafkaProducerService) {
+        this.kafkaProducerService = kafkaProducerService;
+    }
 
-	public static void main(String[] args) {
-		SpringApplication.run(RealtimeDashboardApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(RealtimeDashboardApplication.class, args);
+    }
 
-	@Override
-	public void run(String... args) throws Exception {
-		kafkaProducerService.sendMessage();
-	}
+    @Override
+    public void run(String... args) throws Exception {
+        kafkaProducerService.sendMessage();
+    }
 }

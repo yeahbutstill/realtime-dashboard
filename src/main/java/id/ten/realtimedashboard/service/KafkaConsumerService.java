@@ -6,31 +6,27 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
-public class KafkaConsumerService{
+public class KafkaConsumerService {
 
-    final
-    SimpMessagingTemplate template;
+    final SimpMessagingTemplate template;
 
     public KafkaConsumerService(SimpMessagingTemplate template) {
         this.template = template;
     }
 
-    @KafkaListener(topics="${kafka.topic}")
+    @KafkaListener(topics = "${kafka.topic}")
     public void consume(@Payload String message) {
-        if(isNumeric(message)) {
+        if (isNumeric(message)) {
             template.convertAndSend("/topic/temperature", message);
         }
 
     }
-    public  boolean isNumeric(String str)
-    {
-        try
-        {
+
+    public boolean isNumeric(String str) {
+        try {
             @SuppressWarnings("unused")
             double d = Double.parseDouble(str);
-        }
-        catch(NumberFormatException nfe)
-        {
+        } catch (NumberFormatException nfe) {
             return false;
         }
         return true;
