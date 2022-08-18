@@ -1,10 +1,8 @@
 package id.ten.realtimedashboard;
 
 import id.ten.realtimedashboard.service.KafkaProducerService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
@@ -12,8 +10,11 @@ import org.springframework.context.annotation.ComponentScan;
 @ComponentScan("id.ten")
 public class RealtimeDashboardApplication implements CommandLineRunner {
 
-	@Autowired
-	private KafkaProducerService kafkaProducerService;
+	private final KafkaProducerService kafkaProducerService;
+
+	public RealtimeDashboardApplication(KafkaProducerService kafkaProducerService) {
+		this.kafkaProducerService = kafkaProducerService;
+	}
 
 	public static void main(String[] args) {
 		SpringApplication.run(RealtimeDashboardApplication.class, args);

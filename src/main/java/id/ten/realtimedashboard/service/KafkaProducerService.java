@@ -1,43 +1,40 @@
 package id.ten.realtimedashboard.service;
 
-import org.apache.kafka.clients.producer.Producer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.Random;
+
 @Service
+@Slf4j
 public class KafkaProducerService {
 
-    private static final Logger logger = LoggerFactory.getLogger(Producer.class.getName());
-
     @Value("${kafka.topic}")
-    public String TOPIC;
+    public String topic;
 
-    @Autowired
-    private KafkaTemplate<String, String> kafkaTemplate;
+    private final KafkaTemplate<String, String> kafkaTemplate;
+    private final Random random;
+    public KafkaProducerService(KafkaTemplate<String, String> kafkaTemplate) {
+        this.kafkaTemplate = kafkaTemplate;
+        random = new Random();
+    }
 
     public void sendMessage() throws InterruptedException {
-
         while(true) {
             Thread.sleep(1000);
 
             String data = generateData();
+            log.info("Producing message --> {}",data);
+            this.kafkaTemplate.send(topic,data);
 
-            logger.info(String.format("$$ -> Producing message --> %s",data));
-            this.kafkaTemplate.send(TOPIC,data);
         }
-
-
-
     }
 
     private String generateData() {
-        int min = 1;
-        int max = 100;
-        int data = min + (int)(Math.random() * ((max - min) + 1));
+        int data = random.nextInt(1000);
         return String.valueOf(data);
     }
+
 }
